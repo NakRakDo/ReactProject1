@@ -21,6 +21,7 @@ function AppCoinTracker() {
     });
   };
 
+  //To Do : 화폐 변수 입력받기
   return (
     <div>
       <h1>The Coins ! {loading ? "" : `(${coins.length})`}</h1>

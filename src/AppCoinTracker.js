@@ -4,7 +4,8 @@ function AppCoinTracker() {
   const [loading, setLoading] = useState(true);
   const [coins, setCoins] = useState([]);
   const [selected, setSelected] = useState("");
-  const [price, setPrice] = useState(0);
+  const [usd, setUSD] = useState("");
+  const [calc, setCalc] = useState("");
 
   useEffect(() => {
     fetch("https://api.coinpaprika.com/v1/tickers")
@@ -13,15 +14,22 @@ function AppCoinTracker() {
         setCoins(json);
         setLoading(false);
       });
-  }, [coins]);
+  }, []);
 
   const onChangeSelect = (event) => {
-    setSelected((prev) => {
-      return 20 / event.target.value;
-    });
+    setSelected(event.target.value);
+    setCalc(event.target.value);
   };
 
-  //To Do : 화폐 변수 입력받기
+  const onChangePrice = (event) => {
+    setUSD(event.target.value);
+    if (event.target.value === "") {
+      setCalc(selected);
+      return;
+    }
+    setCalc(event.target.value / selected);
+  };
+
   return (
     <div>
       <h1>The Coins ! {loading ? "" : `(${coins.length})`}</h1>
@@ -38,11 +46,21 @@ function AppCoinTracker() {
             ))}
           </select>
           <input
+            disabled={selected === "" ? true : false}
             type="text"
-            placeholder="Select coin to be Converted..."
-            value={selected}
-            readOnly
-          ></input>
+            placeholder="Type USD ..."
+            value={usd}
+            onChange={onChangePrice}
+          />
+          <span>
+            <input
+              type="text"
+              placeholder="Select coin to be Converted..."
+              value={calc}
+              readOnly
+            />
+            {calc === 1 ? "Coin" : "Coins"}
+          </span>
           <ul>
             {coins.map((coin, index) => (
               <li key={index}>

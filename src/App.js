@@ -11,10 +11,16 @@ function App() {
   const onClick = () => setValue((prev) => prev + 1);
   const onChange = (event) => setKeyword(event.target.value);
   console.log("I run all the time");
-
   useEffect(() => {
     console.log("I run only once : Call the Api");
   }, []);
+
+  useEffect(() => {
+    if (keyword !== "" && keyword.length > 5) {
+      console.log("Search For", keyword);
+    }
+  }, [keyword]);
+
   return (
     <div>
       <h1>Welcom Back!</h1>
